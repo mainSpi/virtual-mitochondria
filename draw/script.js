@@ -97,7 +97,7 @@ let estado = '';
 {
     let a = inibidor === 'Rotenona' && substrato === 'Malato';
     let b = inibidor === 'Amital' && substrato === 'Malato';
-    let c = inibidor === 'Antimicina' && desacoplador === 'semdes';
+    let c = inibidor === 'Antimicina';
     let d = inibidor === 'Cianeto';
     estado = a || b || c || d ? 'halt' : '';
 }
