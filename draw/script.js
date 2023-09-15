@@ -103,14 +103,20 @@ let estado = '';
 }
 if (estado === '')// mantem
 {
-    let aa = inibidor === 'semini' && adp === 'semadp' && desacoplador === 'semdes';
-    estado = aa ? 'mantem' : '';
+    let a = inibidor === 'semini' && adp === 'semadp' && desacoplador === 'semdes';
+    estado = a ? 'mantem' : '';
 }
 
 // queda leve
 // queda media
 // queda grande
 // queda brusca
+if (estado === ''){
+	let a = inibidor !== 'Oligomicina' && inibidor !== 'Cianeto';
+    let b = desacoplador === 'Dinitrofenol';
+    estado = a && b ? 'brusca' : '';
+}
+
 
 
 let loop = setInterval(() => {
@@ -131,8 +137,10 @@ let loop = setInterval(() => {
             case "halt":
                 data.push(data[25] + num * Math.floor(Math.random() * 1.5));
             case "mantem":
-                let a = Math.floor(Math.random() * 10);
                 data.push(data[data.length - 1] + num * Math.floor(Math.random() * 1.2) - 0.3);
+                break;
+            case "brusca":
+				data.push(getQueda(count, 29, -11, -24) + num * Math.floor(Math.random() * 1.5));
                 break;
         }
 
@@ -146,6 +154,11 @@ let loop = setInterval(() => {
         clearInterval(loop);
     }
 }, 50);
+
+
+function getQueda(x, a, b, c){
+	return ((1/Math.log(x + c)) * a) + b;
+}
 
 function alternateRadius(ctx) {
     if (ctx.dataIndex === 12 || ctx.dataIndex === 25) {
