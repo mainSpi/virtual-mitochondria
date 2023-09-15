@@ -104,6 +104,7 @@ let estado = '';
 if (estado === '')// mantem
 {
     let a = inibidor === 'semini' && adp === 'semadp' && desacoplador === 'semdes';
+    let b = inibidor === "Oligomicina" && desacoplador === 'semdes';
     estado = a ? 'mantem' : '';
 }
 
@@ -112,7 +113,7 @@ if (estado === '')// mantem
 // queda grande
 // queda brusca
 if (estado === ''){
-	let a = inibidor !== 'Oligomicina' && inibidor !== 'Cianeto';
+	let a = inibidor !== 'Antimicina' && inibidor !== 'Cianeto';
     let b = desacoplador === 'Dinitrofenol';
     estado = a && b ? 'brusca' : '';
 }
