@@ -140,7 +140,7 @@ let loop = setInterval(() => {
                 data.push(data[data.length - 1] + num * Math.floor(Math.random() * 1.2) - 0.3);
                 break;
             case "brusca":
-				data.push(getQueda(count, 29, -11, -24) + num * Math.floor(Math.random() * 1.5));
+				data.push(getQueda(count, 29, -3, -24) + num * Math.floor(Math.random() * 1.5));
                 break;
         }
 
