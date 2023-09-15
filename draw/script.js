@@ -121,7 +121,7 @@ let loop = setInterval(() => {
     } else if (count < 26) {
         let a = Math.floor(Math.random() * 10);
         let num = a % 2 === 0 ? 1 : -1;
-        data.push(data[data.length - 1] + num * Math.floor(Math.random() * 1.2) - 0.7);
+        data.push(data[data.length - 1] + num * Math.floor(Math.random() * 1.2) - 0.5);
     } else {
 
         let a = Math.floor(Math.random() * 10);
@@ -132,7 +132,7 @@ let loop = setInterval(() => {
                 data.push(data[25] + num * Math.floor(Math.random() * 1.5));
             case "mantem":
                 let a = Math.floor(Math.random() * 10);
-                data.push(data[data.length - 1] + num * Math.floor(Math.random() * 1.2) - 0.7);
+                data.push(data[data.length - 1] + num * Math.floor(Math.random() * 1.2) - 0.3);
                 break;
         }
 
