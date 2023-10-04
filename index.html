@@ -22,7 +22,7 @@
 <body class="bg-light">
 
 <div class="container" style="width: 90%">
-	<main id="config">
+	<main id="config" style="display: none">
 		<div class="py-5 text-center">
 			<img class="d-block mx-auto mb-4" src="/logo.png" alt="" width="128">
 			<h2>Simulador de Mitocôndria</h2>
@@ -32,7 +32,7 @@
 			</p>
 		</div>
 
-		<form action="/draw" method="get">
+		<form action="#" method="get">
 			<div class="row g-5">
 				<div class="col-md col-lg">
 
@@ -136,6 +136,31 @@
 
 	</main>
 
+	<main id="graph" style="display: none">
+		<div class="py-5 text-center">
+			<img class="d-block mx-auto mb-4" src="/logo.png" alt="" width="128">
+			<h2>Simulador de Mitocôndria</h2>
+		</div>
+
+		<div class="row g-5">
+			<div class="col-md col-lg">
+
+				<h4 class="mb-4">Gráfico</h4>
+
+				<hr class="my-4">
+
+				<canvas class="canvas" id="myChart"></canvas>
+
+				<hr class="my-4">
+
+				<a href="/">
+					<button class="w-100 btn btn-secondary btn-lg" type="submit">Voltar</button>
+				</a>
+			</div>
+		</div>
+
+	</main>
+
 	<footer class="my-5 pt-5 text-muted text-center text-small">
 		<p class="mb-1">Murilo Spineli © UFRJ</p>
 		<ul class="list-inline">
@@ -146,6 +171,8 @@
 
 
 <script src="/bootstrap.min.js"></script>
+<script src="/chart.js"></script>
+<script src="/script.js"></script>
 
 
 </body>
