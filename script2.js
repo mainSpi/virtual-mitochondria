@@ -1,26 +1,40 @@
-const url_string = window.location.href;
-const url = new URL(url_string);
-const adp = url.searchParams.get("adp");
-const inibidor = url.searchParams.get("inibidor");
-const substrato = url.searchParams.get("substrato");
-const desacoplador = url.searchParams.get("desacoplador");
+const colors = [
 
+    // '#452103',
+    '#934B00',
+    '#FFBD00',
+    '#F2A65A',
 
+    '#1E3888',
+    '#7F96FF',
+    '#47A8BD',
+
+    '#904C77',
+    '#139A43',
+    '#74D3AE',
+    '#DBF4A7',
+
+    '#603140',
+    '#DD9787',
+    '#DD9AC2',
+
+    '#898989',
+    '#404040',
+
+    '#678D58',
+
+];
 graph();
 graphGrad();
 
 function graph() {
-    let label = '';
-    label += adp === "semadp" ? '0' : adp;
-    label += " nmol ADP";
-    label += inibidor === "semini" ? '' : ' + ' + inibidor;
-    label += desacoplador === "semdes" ? '' : ' + ' + desacoplador;
-
     const ctx = document.getElementById('myChart');
     let data = [100];
     let data2 = [2];
 
     Chart.defaults.font.size = 16;
+    Chart.defaults.font.family = 'Exo';
+    Chart.defaults.font.weight = '500';
 
     let chart = new Chart(ctx, {
         type: 'line',
@@ -44,17 +58,18 @@ function graph() {
                     yAxisID: 'y1'
                 },
 
-                {
-                    label: 'Mitocôndria',
-                    backgroundColor: '#FFBD00'
-                },
-                {
-                    label: label,
-                    backgroundColor: '#FF0054'
-                }
+                // {
+                //     label: 'Mitocôndria',
+                //     backgroundColor: '#FFBD00'
+                // },
+                // {
+                //     label: "Seila",
+                //     backgroundColor: '#FF0054'
+                // }
             ]
         },
         options: {
+            animation: false,
             elements: {
                 point: {
                     radius: alternateRadius,
@@ -134,7 +149,12 @@ function graph() {
     });
 
 
-    chart.data.datasets.push({label: 'teste', backgroundColor: '#00FF00'});
+    for (const c of colors) {
+        chart.data.datasets.push(
+            {label: 'Cores legais', backgroundColor: c}
+        );
+    }
+
     chart.update();
 
     let count = 0;
@@ -146,57 +166,13 @@ function graph() {
         if (count >= 100) {
             clearInterval(loop);
         }
-    }, 50);
-
-    // let loop = setInterval(() => {
-    //     if (count < 13) {
-    //         let a = Math.floor(Math.random() * 10);
-    //         let num = a % 2 === 0 ? 1 : -1;
-    //         data.push(95 + num * Math.floor(Math.random() * 2));
-    //     } else if (count < 26) {
-    //         let a = Math.floor(Math.random() * 10);
-    //         let num = a % 2 === 0 ? 1 : -1;
-    //         data.push(data[data.length - 1] + num * Math.floor(Math.random() * 1.2) - 0.5);
-    //     } else {
-    //
-    //         let a = Math.floor(Math.random() * 10);
-    //         let num = a % 2 === 0 ? 1 : -1;
-    //
-    //         switch (estado) {
-    //             case "halt":
-    //                 data.push(data[25] + num * Math.floor(Math.random() * 1.5));
-    //             case "mantem":
-    //                 data.push(data[data.length - 1] + num * Math.floor(Math.random() * 1.2) - 0.3);
-    //                 break;
-    //             case "brusca":
-    //                 data.push(getQueda(count, 29, -3, -24) + num * Math.floor(Math.random() * 1.5));
-    //                 break;
-    //         }
-    //
-    //
-    //     }
-    //
-    //
-    //     count++;
-    //     chart.update();
-    //     if (count >= 100) {
-    //         clearInterval(loop);
-    //     }
-    // }, 50);
+    }, 500);
 
 }
 
 function graphGrad() {
-    let label = '';
-    label += adp === "semadp" ? '0' : adp;
-    label += " nmol ADP";
-    label += inibidor === "semini" ? '' : ' + ' + inibidor;
-    label += desacoplador === "semdes" ? '' : ' + ' + desacoplador;
-
     const ctx = document.getElementById('grad');
     let data = [50];
-
-    Chart.defaults.font.size = 16;
 
     let chart = new Chart(ctx, {
         type: 'line',
@@ -208,25 +184,18 @@ function graphGrad() {
                     data: data,
                     fill: false,
                     borderColor: "#ff00dc",
-                    tension: 0.1
-                },
-
-                {
-                    label: 'Mitocôndria',
-                    backgroundColor: '#FFBD00'
-                },
-                {
-                    label: label,
-                    backgroundColor: '#FF0054'
+                    tension: 0.1,
                 }
             ]
         },
         options: {
+            animation: false,
             elements: {
                 point: {
                     radius: alternateRadius,
                     pointStyle: 'circle',
-                    backgroundColor: alternateColor
+                    backgroundColor: alternateColor,
+                    borderColor: '#000000'
                 }
             },
             maintainAspectRatio: false,
@@ -236,7 +205,7 @@ function graphGrad() {
                 },
                 legend: {
                     labels: {
-                        filter: (legendItem, chartData) => false,
+                        filter: () => false,
                     }
                 },
                 tooltip: {
@@ -304,43 +273,7 @@ function graphGrad() {
         if (count >= 100) {
             clearInterval(loop);
         }
-    }, 50);
-
-    // let loop = setInterval(() => {
-    //     if (count < 13) {
-    //         let a = Math.floor(Math.random() * 10);
-    //         let num = a % 2 === 0 ? 1 : -1;
-    //         data.push(95 + num * Math.floor(Math.random() * 2));
-    //     } else if (count < 26) {
-    //         let a = Math.floor(Math.random() * 10);
-    //         let num = a % 2 === 0 ? 1 : -1;
-    //         data.push(data[data.length - 1] + num * Math.floor(Math.random() * 1.2) - 0.5);
-    //     } else {
-    //
-    //         let a = Math.floor(Math.random() * 10);
-    //         let num = a % 2 === 0 ? 1 : -1;
-    //
-    //         switch (estado) {
-    //             case "halt":
-    //                 data.push(data[25] + num * Math.floor(Math.random() * 1.5));
-    //             case "mantem":
-    //                 data.push(data[data.length - 1] + num * Math.floor(Math.random() * 1.2) - 0.3);
-    //                 break;
-    //             case "brusca":
-    //                 data.push(getQueda(count, 29, -3, -24) + num * Math.floor(Math.random() * 1.5));
-    //                 break;
-    //         }
-    //
-    //
-    //     }
-    //
-    //
-    //     count++;
-    //     chart.update();
-    //     if (count >= 100) {
-    //         clearInterval(loop);
-    //     }
-    // }, 50);
+    }, 500);
 
 }
 
