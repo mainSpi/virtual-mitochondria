@@ -7,11 +7,9 @@ const desacoplador = url.searchParams.get("desacoplador");
 
 
 graph();
-
+graphGrad();
 
 function graph() {
-
-
     let label = '';
     label += adp === "semadp" ? '0' : adp;
     label += " nmol ADP";
@@ -22,7 +20,7 @@ function graph() {
     let data = [100];
     let data2 = [2];
 
-    Chart.defaults.font.size = 18;
+    Chart.defaults.font.size = 16;
 
     let chart = new Chart(ctx, {
         type: 'line',
@@ -64,7 +62,7 @@ function graph() {
                     backgroundColor: alternateColor
                 }
             },
-            aspectRatio: 1.5,
+            aspectRatio: 1.9,
             plugins: {
                 label: {
                     display: false
@@ -85,7 +83,7 @@ function graph() {
                     },
                     title: {
                         display: true,
-                        text: 'Tempo',
+                        text: '% de Oxigênio no meio X Tempo',
                         font: {
                             size: 16
                         }
@@ -98,7 +96,7 @@ function graph() {
                     min: 0,
                     max: 100,
                     title: {
-                        display: true,
+                        display: false,
                         text: '% de Oxigênio no meio',
                         font: {
                             size: 16
@@ -117,7 +115,7 @@ function graph() {
                     },
 
                     title: {
-                        display: true,
+                        display: false,
                         text: 'Gradiente de prótons',
                         font: {
                             size: 16
@@ -142,7 +140,165 @@ function graph() {
     let count = 0;
     let loop = setInterval(() => {
         data.push(data[data.length - 1] - 0.9);
-        data2.push(5);
+        // data2.push(5);
+        count++;
+        chart.update();
+        if (count >= 100) {
+            clearInterval(loop);
+        }
+    }, 50);
+
+    // let loop = setInterval(() => {
+    //     if (count < 13) {
+    //         let a = Math.floor(Math.random() * 10);
+    //         let num = a % 2 === 0 ? 1 : -1;
+    //         data.push(95 + num * Math.floor(Math.random() * 2));
+    //     } else if (count < 26) {
+    //         let a = Math.floor(Math.random() * 10);
+    //         let num = a % 2 === 0 ? 1 : -1;
+    //         data.push(data[data.length - 1] + num * Math.floor(Math.random() * 1.2) - 0.5);
+    //     } else {
+    //
+    //         let a = Math.floor(Math.random() * 10);
+    //         let num = a % 2 === 0 ? 1 : -1;
+    //
+    //         switch (estado) {
+    //             case "halt":
+    //                 data.push(data[25] + num * Math.floor(Math.random() * 1.5));
+    //             case "mantem":
+    //                 data.push(data[data.length - 1] + num * Math.floor(Math.random() * 1.2) - 0.3);
+    //                 break;
+    //             case "brusca":
+    //                 data.push(getQueda(count, 29, -3, -24) + num * Math.floor(Math.random() * 1.5));
+    //                 break;
+    //         }
+    //
+    //
+    //     }
+    //
+    //
+    //     count++;
+    //     chart.update();
+    //     if (count >= 100) {
+    //         clearInterval(loop);
+    //     }
+    // }, 50);
+
+}
+
+function graphGrad() {
+    let label = '';
+    label += adp === "semadp" ? '0' : adp;
+    label += " nmol ADP";
+    label += inibidor === "semini" ? '' : ' + ' + inibidor;
+    label += desacoplador === "semdes" ? '' : ' + ' + desacoplador;
+
+    const ctx = document.getElementById('grad');
+    let data = [50];
+
+    Chart.defaults.font.size = 16;
+
+    let chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: new Array(100).fill(''),
+            datasets: [
+                {
+                    label: 'protons',
+                    data: data,
+                    fill: false,
+                    borderColor: "#ff00dc",
+                    tension: 0.1
+                },
+
+                {
+                    label: 'Mitocôndria',
+                    backgroundColor: '#FFBD00'
+                },
+                {
+                    label: label,
+                    backgroundColor: '#FF0054'
+                }
+            ]
+        },
+        options: {
+            elements: {
+                point: {
+                    radius: alternateRadius,
+                    pointStyle: 'circle',
+                    backgroundColor: alternateColor
+                }
+            },
+            maintainAspectRatio: false,
+            plugins: {
+                label: {
+                    display: false
+                },
+                legend: {
+                    labels: {
+                        filter: (legendItem, chartData) => false,
+                    }
+                },
+                tooltip: {
+                    enabled: false
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Gradiente de prótons X Tempo',
+                        font: {
+                            size: 16
+                        }
+                    },
+                    ticks: {
+                        display: false
+                    },
+                },
+                y: {
+                    min: 0,
+                    max: 100,
+                    ticks: {
+                        display: true
+                    },
+
+                    title: {
+                        display: false,
+                        text: 'Gradiente de prótons',
+                        font: {
+                            size: 16
+                        }
+                    },
+
+                    // grid line settings
+                    grid: {
+                        drawTicks: false,
+                    }
+                },
+            }
+        }
+    });
+
+
+    chart.data.datasets.push({label: 'teste', backgroundColor: '#00FF00'});
+    chart.update();
+
+    let count = 0;
+    let loop = setInterval(() => {
+        if (count < 20){
+            data.push(20);
+        } else if (count <50){
+            data.push(80);
+        } else if (count <80){
+            data.push(50);
+        } else if (count <100){
+            data.push(100);
+        }
+
         count++;
         chart.update();
         if (count >= 100) {
