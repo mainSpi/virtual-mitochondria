@@ -2328,9 +2328,6 @@ function createLoop(interval) {
     }, interval);
 }
 
-shuffle(colors);
-createLoop(50 + (-1 * velSlider.value));
-
 
 function oldGameLoop() {
 
@@ -2569,6 +2566,7 @@ function pausar() {
 }
 
 let delayLoop = null;
+
 function criarDelayInterativo(counts) {
     clearInterval(delayLoop)
     btnConfig.disabled = true;
@@ -2651,3 +2649,8 @@ function download(dataUrl) {
     a.click();
     document.body.removeChild(a);
 }
+
+window.addEventListener("load", () => {
+    shuffle(colors);
+    createLoop(50 + (-1 * velSlider.value));
+});

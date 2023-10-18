@@ -1,178 +1,179 @@
 <html lang="pt-BR">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="">
-	<meta name="author" content="Murilo Nespolo Spineli">
-	<meta name="mitocondria" content="Mitocondria 0.1">
-	<title>Mitocôndria Virtual</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Murilo Nespolo Spineli">
+    <meta name="mitocondria" content="Mitocondria 0.1">
+    <title>Mitocôndria Virtual</title>
 
-	<link href="/bootstrap.min.css" rel="stylesheet">
+    <link href="/styles/bootstrap.min.css" rel="stylesheet">
+    <link href="/styles/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles/style.css">
 
-	<!-- Favicons -->
-	<link rel="icon" href="/favicon-32x32.png" sizes="32x32" type="image/png">
-	<link rel="icon" href="/favicon-16x16.png" sizes="16x16" type="image/png">
-	<link rel="manifest" href="/manifest.json">
-	<link rel="icon" href="/favicon.png">
-	<meta name="theme-color" content="#712cf9">
+    <!-- Favicons -->
+    <link rel="icon" href="/images/favicon-32x32.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="/images/favicon-16x16.png" sizes="16x16" type="image/png">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/favicon.png">
+    <meta name="theme-color" content="#712cf9">
 
-	<link rel="stylesheet" href="style.css">
 
 </head>
 <body class="bg-light">
 
-<div class="container" style="width: 90%">
-	<main id="config" style="display: none">
-		<div class="py-5 text-center">
-			<img class="d-block mx-auto mb-4" src="/logo.png" alt="" width="128">
-			<h2>Simulador de Mitocôndria</h2>
-			<p class="lead">Neste experimento virtual você pode acompanhar o consumo de oxigênio por mitocôndrias isoladas
-				incubadas com diferentes metabólitos, com ou sem um desacoplador, e com e sem
-				adição de diversos inibidores respiratórios.
-			</p>
-		</div>
+<div>
+    <div>
+        <button type="button" class="btn btn-primary btn-circle btn-xl fabConf" data-bs-toggle="modal"
+                data-bs-target="#exampleModal" id="btnConfig">
+            <i class="bi bi-gear-fill"></i>
+        </button>
 
-		<form action="#" method="get">
-			<div class="row g-5">
-				<div class="col-md col-lg">
+        <button type="button" class="btn btn-success btn-circle btn-xl fabTime" id="btnPlay">
+            <i class="bi bi-pause-fill" style="font-size: 28px; display: none" id="icnPause"></i>
+            <i class="bi bi-play-fill" style="font-size: 28px; " id="icnPlay"></i>
+        </button>
+    </div>
 
-					<h4 class="mb-4">Configurações</h4>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Experimento</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                            id="btnClose"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container text-center">
+                        <input type="range" class="form-range" min="-49" max="50" id="velSlider">
+                        <label for="velSlider" class="form-label">Velocidade</label>
 
-					<hr class="my-4">
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-check checkbox">
+                                    <input class="form-check-input" type="checkbox" value="" id="mito">
+                                    <label class="form-check-label" for="mito">Mitocôndria</label>
+                                </div>
+                                <div class="form-check checkbox">
+                                    <input class="form-check-input" type="checkbox" value="" id="AA">
+                                    <label class="form-check-label" for="AA">Antimicina A</label>
+                                </div>
+                                <div class="form-check checkbox">
+                                    <input class="form-check-input" type="checkbox" value="" id="ADP1">
+                                    <label class="form-check-label" for="ADP1">ADP + Pi (1)</label>
+                                </div>
+                                <div class="form-check checkbox">
+                                    <input class="form-check-input" type="checkbox" value="" id="ADP2">
+                                    <label class="form-check-label" for="ADP2">ADP + Pi (2)</label>
+                                </div>
+                                <div class="form-check checkbox">
+                                    <input class="form-check-input" type="checkbox" value="" id="CN">
+                                    <label class="form-check-label" for="CN">Cianeto</label>
+                                </div>
+                                <div class="form-check checkbox">
+                                    <input class="form-check-input" type="checkbox" value="" id="DNP">
+                                    <label class="form-check-label" for="DNP">2,4-DNP</label>
+                                </div>
+                                <div class="form-check checkbox">
+                                    <input class="form-check-input" type="checkbox" value="" id="MAL">
+                                    <label class="form-check-label" for="MAL">Malato</label>
+                                </div>
+                                <div class="form-check checkbox">
+                                    <input class="form-check-input" type="checkbox" value="" id="MALO">
+                                    <label class="form-check-label" for="MALO">Malonato</label>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-check checkbox">
+                                    <input class="form-check-input" type="checkbox" value="" id="ROT">
+                                    <label class="form-check-label" for="ROT">Rotenona</label>
+                                </div>
+                                <div class="form-check checkbox">
+                                    <input class="form-check-input" type="checkbox" value="" id="SUC">
+                                    <label class="form-check-label" for="SUC">Succinato</label>
+                                </div>
+                                <div class="form-check checkbox">
+                                    <input class="form-check-input" type="checkbox" value="" id="TMDP">
+                                    <label class="form-check-label" for="TMDP">TMDP</label>
+                                </div>
+                                <div class="form-check checkbox">
+                                    <input class="form-check-input" type="checkbox" value="" id="OLG">
+                                    <label class="form-check-label" for="OLG">Oligomicina</label>
+                                </div>
+                                <div class="form-check checkbox">
+                                    <input class="form-check-input" type="checkbox" value="" id="CO">
+                                    <label class="form-check-label" for="CO">CO</label>
+                                </div>
+                                <div class="form-check checkbox">
+                                    <input class="form-check-input" type="checkbox" value="" id="ACT">
+                                    <label class="form-check-label" for="ACT">Alfa-Cet</label>
+                                </div>
+                                <div class="form-check checkbox">
+                                    <input class="form-check-input" type="checkbox" value="" id="PIR">
+                                    <label class="form-check-label" for="PIR">Piruvato</label>
+                                </div>
+                                <div class="form-check checkbox">
+                                    <input class="form-check-input" type="checkbox" value="" id="FCCP">
+                                    <label class="form-check-label" for="FCCP">FCCP</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="justify-content: center">
+                    <button type="button" class="btn btn-success" id="btnExpo">Exportar Dados
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnReset">Reiniciar
+                    </button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="btnContinuar">Continuar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-					<h4 class="mb-3">Substrato</h4>
-
-					<div class="my-3">
-						<div class="form-check">
-							<input id="malato" value="Malato" name="substrato" type="radio" class="form-check-input" checked=""
-								   required="">
-							<label class="form-check-label" for="malato">Malato</label>
-						</div>
-						<div class="form-check">
-							<input id="succinato" value="Succinato" name="substrato" type="radio" class="form-check-input" required="">
-							<label class="form-check-label" for="succinato">Succinato</label>
-						</div>
-					</div>
-
-					<hr class="my-4">
-
-					<h4 class="mb-3">ADP</h4>
-
-					<div class="my-3">
-						<div class="form-check">
-							<input id="semadp" value="semadp" name="adp" type="radio" class="form-check-input" checked=""
-								   required="">
-							<label class="form-check-label" for="semadp">0 nmol</label>
-						</div>
-						<div class="form-check">
-							<input id="500" value="500" name="adp" type="radio" class="form-check-input" required="">
-							<label class="form-check-label" for="500">500 nmol</label>
-						</div>
-						<div class="form-check">
-							<input id="750" name="adp" value="750" type="radio" class="form-check-input" required="">
-							<label class="form-check-label" for="750">750 nmol</label>
-						</div>
-						<div class="form-check">
-							<input id="1000" name="adp" value="1000" type="radio" class="form-check-input" required="">
-							<label class="form-check-label" for="1000">1000 nmol</label>
-						</div>
-					</div>
-
-					<hr class="my-4">
-
-					<h4 class="mb-3">Inibidor</h4>
-
-					<div class="my-3">
-						<div class="form-check">
-							<input id="semini" value="semini" name="inibidor" type="radio" class="form-check-input" checked=""
-								   required="">
-							<label class="form-check-label" for="semini">Nenhum</label>
-						</div>
-						<div class="form-check">
-							<input id="oligomicina" value="Oligomicina" name="inibidor" type="radio" class="form-check-input"
-								   required="">
-							<label class="form-check-label" for="oligomicina">Oligomicina</label>
-						</div>
-						<div class="form-check">
-							<input id="rotenona" value="Rotenona" name="inibidor" type="radio" class="form-check-input" required="">
-							<label class="form-check-label" for="rotenona">Rotenona</label>
-						</div>
-						<div class="form-check">
-							<input id="cianeto" value="Cianeto" name="inibidor" type="radio" class="form-check-input" required="">
-							<label class="form-check-label" for="cianeto">Cianeto</label>
-						</div>
-						<div class="form-check">
-							<input id="antimicina" value="Antimicina" name="inibidor" type="radio" class="form-check-input" required="">
-							<label class="form-check-label" for="antimicina">Antimicina</label>
-						</div>
-						<div class="form-check">
-							<input id="amital" value="Amital" name="inibidor" type="radio" class="form-check-input" required="">
-							<label class="form-check-label" for="amital">Amital</label>
-						</div>
-					</div>
-
-					<hr class="my-4">
-
-					<h4 class="mb-3">Desacoplador</h4>
-
-					<div class="my-3">
-						<div class="form-check">
-							<input id="semdes" value="semdes" name="desacoplador" type="radio" class="form-check-input" checked=""
-								   required="">
-							<label class="form-check-label" for="semdes">Nenhum</label>
-						</div>
-						<div class="form-check">
-							<input id="dnp" value="Dinitrofenol" name="desacoplador" type="radio" class="form-check-input" required="">
-							<label class="form-check-label" for="dnp">Dinitrofenol</label>
-						</div>
-					</div>
-
-					<hr class="my-4">
-
-					<button class="w-100 btn btn-primary btn-lg" type="submit">Simular</button>
-				</div>
-			</div>
-		</form>
-
-	</main>
-
-	<main id="graph" style="display: none">
-		<div class="py-5 text-center">
-			<img class="d-block mx-auto mb-4" src="/logo.png" alt="" width="128">
-			<h2>Simulador de Mitocôndria</h2>
-		</div>
-
-		<div class="row g-5">
-			<div class="col-md col-lg">
-
-				<h4 class="mb-4">Gráfico</h4>
-
-				<hr class="my-4">
-
-				<canvas class="canvas" id="myChart"></canvas>
-
-				<hr class="my-4">
-
-				<a href="/">
-					<button class="w-100 btn btn-secondary btn-lg" type="submit">Voltar</button>
-				</a>
-			</div>
-		</div>
-
-	</main>
-
-	<footer class="my-5 pt-5 text-muted text-center text-small">
-		<p class="mb-1">Murilo Spineli © UFRJ</p>
-		<ul class="list-inline">
-			<li class="list-inline-item">spinelimurilo@gmail.com</li>
-		</ul>
-	</footer>
 </div>
 
 
-<script src="/bootstrap.min.js"></script>
-<script src="/chart.js"></script>
-<script src="/script.js"></script>
+<div class="container" style="width: 90%">
+    <main>
+        <div class="py-5 text-center">
+            <img class="d-block mx-auto mb-4" src="/images/logo.png" alt="" width="128">
+            <h2>Simulador de Mitocôndria</h2>
+        </div>
+
+        <div class="row g-5">
+            <div class="col-md col-lg">
+
+                <h4 class="mb-4">Gráfico</h4>
+
+                <hr class="my-4">
+
+                <canvas class="canvas" id="export" style="display: none"></canvas>
+                <canvas class="canvas" id="myChart"></canvas>
+                <div style="height: 150px">
+                    <canvas class="canvas" id="grad"></canvas>
+                </div>
+
+                <hr class="my-4">
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="my-5 pt-5 text-muted text-center text-small">
+        <p class="mb-1">Murilo Spineli © UFRJ</p>
+        <ul class="list-inline">
+            <li class="list-inline-item">spinelimurilo@gmail.com</li>
+        </ul>
+    </footer>
+</div>
+
+
+<script src="/scripts/bootstrap.min.js"></script>
+<script src="/scripts/chart.js"></script>
+<script src="/scripts/script.js"></script>
 
 
 </body>

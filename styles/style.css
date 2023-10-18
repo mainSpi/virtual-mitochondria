@@ -1,6 +1,6 @@
 @font-face {
     font-family: "Exo";
-    src: url("/Exo-VariableFont_wght.ttf") format("truetype");
+    src: url("/styles/Exo-VariableFont_wght.ttf") format("truetype");
 }
 .bd-placeholder-img {
     font-size: 1.125rem;
