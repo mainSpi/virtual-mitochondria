@@ -2209,7 +2209,7 @@ btnReset.addEventListener("click", () => {
     while (proData.length > 0) {
         proData.pop();
     }
-    while (legendas.length > 0) {
+    while (legendas.length > 1) {
         legendas.pop();
     }
     pontos = [];
