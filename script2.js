@@ -2094,7 +2094,7 @@ const Estados = {
 let legendas = [
     // {label: "Malonato", backgroundColor: "#FFFFFF"}
 ];
-let oxiData = [99];
+let oxiData = [100];
 let proData = [10];
 
 
@@ -2182,9 +2182,10 @@ configs.forEach(input => {
         }
 
         lastAdd = input.id;
-        if(temMitocondria){
+        if (temMitocondria) {
             if (dataSet[binarioAtual] > 5.0) {
                 criarDelayInterativo(100);
+                console.log("trigada espera de 100 ciclos");
             } else if (dataSet[binarioAtual] > 0 && dataSet[binarioAtual] <= 5) {
                 criarDelayInterativo(50);
             }
@@ -2259,13 +2260,13 @@ let loop = setInterval(() => {
                     proData.push(proData[proData.length - 1]);
                 }
             } else {
-                if (score < 5.2) { // composto
+                if (score < 5.1) { // composto
                     oxiData.push(oxiData[oxiData.length - 1] - getValorFromScore(score));
                 } else {
-                    if (globalCount - lastChangeCount < 50) {
+                    if ((globalCount - lastChangeCount) < 25) {
                         oxiData.push(oxiData[oxiData.length - 1] - getValorFromScore(5));
                     } else {
-                        oxiData.push(oxiData[oxiData.length - 1] - getValorFromScore((Math.floor(score))));
+                        oxiData.push(oxiData[oxiData.length - 1] - getValorFromScore((Math.floor((score - 5) * 10))));
                     }
                 }
             }
@@ -2330,13 +2331,15 @@ function graph() {
                 {
                     label: 'oxigenio',
                     data: oxiData,
-                    fill: false,
+                    fill: true,
+                    // backgroundColor: "#00FF00",
                     borderColor: "#712cf9",
                     tension: 0.1
                 },
             ]
         },
         options: {
+            clip: false,
             hover: {mode: null},
             animation: false,
             elements: {
@@ -2379,6 +2382,9 @@ function graph() {
                 y: {
                     min: 0,
                     max: 100,
+                    ticks: {
+                        stepSize: 20,
+                    },
                     title: {
                         display: false,
                         text: '% de Oxigênio no meio',
@@ -2406,7 +2412,7 @@ function graphGrad() {
                 {
                     label: 'protons',
                     data: proData,
-                    fill: false,
+                    fill: true,
                     borderColor: "#ff00dc",
                     tension: 0.1,
                 }
@@ -2457,7 +2463,8 @@ function graphGrad() {
                     min: 0,
                     max: 100,
                     ticks: {
-                        display: true
+                        display: true,
+                        stepSize: 50
                     },
 
                     title: {
@@ -2470,7 +2477,7 @@ function graphGrad() {
 
                     // grid line settings
                     grid: {
-                        drawTicks: false,
+                        drawTicks: true,
                     }
                 },
             }
@@ -2543,7 +2550,7 @@ function getQueda(x, a, b, c, d) {
     return ((d / Math.log(x + c)) * a) + b;
 }
 
-function getValorFromScore(score){
+function getValorFromScore(score) {
     switch (score) {
         case 1:
             return 0.05;
