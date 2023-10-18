@@ -2075,70 +2075,176 @@ const dataSet = {
     "11111111111": 0,
 }
 
+const labelsMap = [...document.getElementsByTagName("label")]
+    .map(l => {
+        return {id: l.getAttribute("for"), text: l.innerText};
+    });
+const configs = [...document.getElementsByClassName("form-check checkbox")]
+    .map(e => e.children[0]);
 const btnClose = document.getElementById("btnClose");
+const btnConfig = document.getElementById("btnConfig");
+const btnPlay = document.getElementById("btnPlay");
+const btnReset = document.getElementById("btnReset");
 const icnPlay = document.getElementById("icnPlay");
 const icnPause = document.getElementById("icnPause");
 const Estados = {
     PAUSADO: 0,
-    RODANDO :1,
+    RODANDO: 1,
 }
-let legendas = [];
+let legendas = [
+    // {label: "Malonato", backgroundColor: "#FFFFFF"}
+];
 let oxiData = [100];
 let proData = [50];
-let pontos = [
-    {count: 100, colorId: 0},
-    {count: 200, colorId: 1},
-];
 
+
+let pontos = [
+    // {count: 100, colorId: 0},
+];
+let globalCount = 0;
+let lastChangeCount = 0;
 let oxiGraph = graph();
 let proGraph = graphGrad();
 
 let estadoAtual = Estados.PAUSADO;
+let binarioAtual = "00000000000";
 
 [...document.getElementsByClassName("form-check checkbox")]
     .map(e => e.children[0])
     .forEach(input => {
         input.addEventListener("click", () => {
-            console.log(input.id);
+            switch (input.id) {
+                case "mito":
+                    adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 0);
+                    criarDelayInterativo(100);
+                    break;
+                case "AA":
+                    adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 1);
+                    binarioAtual = replaceAt(binarioAtual, 7, "1");
+                    break;
+                case "ADP1":
+                    adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 2);
+                    binarioAtual = replaceAt(binarioAtual, 3, "1");
+                    break;
+                case "ADP2":
+                    adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 3);
+                    binarioAtual = replaceAt(binarioAtual, 4, "1");
+                    break;
+                case "CN":
+                    adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 4);
+                    binarioAtual = replaceAt(binarioAtual, 8, "1");
+                    break;
+                case "DNP":
+                    adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 5);
+                    binarioAtual = replaceAt(binarioAtual, 9, "1");
+                    break;
+                case "MAL":
+                    adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 6);
+                    binarioAtual = replaceAt(binarioAtual, 0, "1");
+                    break;
+                case "MALO":
+                    adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 7);
+                    binarioAtual = replaceAt(binarioAtual, 6, "1");
+                    break;
+                case "ROT":
+                    adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 8);
+                    binarioAtual = replaceAt(binarioAtual, 5, "1");
+                    break;
+                case "SUC":
+                    adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 9);
+                    binarioAtual = replaceAt(binarioAtual, 1, "1");
+                    break;
+                case "TMDP":
+                    adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 10);
+                    binarioAtual = replaceAt(binarioAtual, 2, "1");
+                    break;
+                case "OLG":
+                    adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 11);
+                    binarioAtual = replaceAt(binarioAtual, 10, "1");
+                    break;
+                case "CO":
+                    adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 12);
+                    binarioAtual = replaceAt(binarioAtual, 8, "1");
+                    break;
+                case "ACT":
+                    adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 13);
+                    binarioAtual = replaceAt(binarioAtual, 0, "1");
+                    break;
+                case "PIR":
+                    adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 14);
+                    binarioAtual = replaceAt(binarioAtual, 0, "1");
+                    break;
+                case "FCCP":
+                    adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 15);
+                    binarioAtual = replaceAt(binarioAtual, 9, "1");
+                    break;
+            }
 
+            if (dataSet[binarioAtual] > 5.0){
+                criarDelayInterativo(200);
+            } else if (dataSet[binarioAtual] > 0 && dataSet[binarioAtual] <= 5){
+                criarDelayInterativo(100);
+            }
 
             input.disabled = true;
             btnClose.dispatchEvent(new Event('click'));
+            lastChangeCount = globalCount;
+            despausar();
         });
     });
 
-document.getElementById("btnReset").addEventListener("click", () => {
-    [...document.getElementsByClassName("form-check checkbox")]
-        .map(e => e.children[0])
-        .forEach(input => {
-            input.disabled = false;
-            input.checked = false;
-        });
+btnReset.addEventListener("click", () => {
+    configs.forEach(input => {
+        input.disabled = false;
+        input.checked = false;
+    });
     estadoAtual = Estados.PAUSADO;
+    globalCount = 0;
     icnPause.style.display = "none";
     icnPlay.style.display = "";
-    legendas = [];
-    oxiData = [];
-    proData = [];
+    btnPlay.disabled = false;
+    while (oxiData.length > 0) {
+        oxiData.pop();
+    }
+    while (proData.length > 0) {
+        proData.pop();
+    }
+    while (legendas.length > 0) {
+        legendas.pop();
+    }
     pontos = [];
+    configs.forEach(input => {
+            input.disabled = false;
+            input.checked = false;
+        }
+    );
+    oxiGraph.update();
+    proGraph.update();
 });
 
-document.getElementById("btnPlay").addEventListener("click", () => {
-    if (estadoAtual === Estados.PAUSADO){ // despausar
-        icnPause.style.display = "";
-        icnPlay.style.display = "none";
-        estadoAtual = Estados.RODANDO;
+btnPlay.addEventListener("click", () => {
+    if (estadoAtual === Estados.PAUSADO) { // despausar
+        despausar();
     } else {
-        icnPause.style.display = "none";
-        icnPlay.style.display = "";
-        estadoAtual = Estados.PAUSADO;
+        pausar();
     }
-    console.log(estadoAtual);
+});
+
+btnConfig.addEventListener("click", () => {
+    pausar();
 });
 
 let loop = setInterval(() => {
-    if (estadoAtual === Estados.RODANDO){
-        
+    if (estadoAtual === Estados.RODANDO) {
+        console.log("asdas");
+        oxiData.push(90);
+        proData.push(50);
+        oxiGraph.update();
+        proGraph.update();
+        globalCount++;
+    }
+    if (globalCount >= 1000) {
+        gameOver();
     }
 }, 50);
 
@@ -2196,6 +2302,7 @@ function graph() {
             ]
         },
         options: {
+            hover: {mode: null},
             animation: false,
             elements: {
                 point: {
@@ -2271,6 +2378,7 @@ function graphGrad() {
             ]
         },
         options: {
+            hover: {mode: null},
             animation: false,
             elements: {
                 point: {
@@ -2351,4 +2459,46 @@ function alternateColor(ctx) {
     if (legenda.length > 0) {
         return colors[legenda[0].colorId];
     }
+}
+
+function replaceAt(str, index, replacement) {
+    return str.substring(0, index) + replacement + str.substring(index + replacement.length);
+}
+
+function despausar() {
+    icnPause.style.display = "";
+    icnPlay.style.display = "none";
+    estadoAtual = Estados.RODANDO;
+}
+
+function pausar() {
+    icnPause.style.display = "none";
+    icnPlay.style.display = "";
+    estadoAtual = Estados.PAUSADO;
+}
+
+function criarDelayInterativo(counts) {
+    btnConfig.disabled = true;
+    btnPlay.disabled = true;
+    let delayLoop = setInterval(() => {
+        if (globalCount >= lastChangeCount + counts) {
+            btnConfig.disabled = false;
+            btnPlay.disabled = false;
+            clearInterval(delayLoop);
+        }
+    }, 50)
+}
+
+function adicionarMarca(count, name, colorId) {
+    legendas.push({label: name, backgroundColor: colors[colorId]});
+    pontos.push({count: count, colorId: colorId});
+}
+
+function gameOver() {
+    pausar();
+    btnPlay.disabled = true;
+    configs.forEach(input => {
+            input.disabled = true;
+        }
+    );
 }
