@@ -2094,8 +2094,8 @@ const Estados = {
 let legendas = [
     // {label: "Malonato", backgroundColor: "#FFFFFF"}
 ];
-let oxiData = [100];
-let proData = [50];
+let oxiData = [99];
+let proData = [10];
 
 
 let pontos = [
@@ -2108,90 +2108,95 @@ let proGraph = graphGrad();
 
 let estadoAtual = Estados.PAUSADO;
 let binarioAtual = "00000000000";
+let temMitocondria = false;
+let lastAdd = "";
 
-[...document.getElementsByClassName("form-check checkbox")]
-    .map(e => e.children[0])
-    .forEach(input => {
-        input.addEventListener("click", () => {
-            switch (input.id) {
-                case "mito":
-                    adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 0);
-                    criarDelayInterativo(100);
-                    break;
-                case "AA":
-                    adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 1);
-                    binarioAtual = replaceAt(binarioAtual, 7, "1");
-                    break;
-                case "ADP1":
-                    adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 2);
-                    binarioAtual = replaceAt(binarioAtual, 3, "1");
-                    break;
-                case "ADP2":
-                    adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 3);
-                    binarioAtual = replaceAt(binarioAtual, 4, "1");
-                    break;
-                case "CN":
-                    adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 4);
-                    binarioAtual = replaceAt(binarioAtual, 8, "1");
-                    break;
-                case "DNP":
-                    adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 5);
-                    binarioAtual = replaceAt(binarioAtual, 9, "1");
-                    break;
-                case "MAL":
-                    adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 6);
-                    binarioAtual = replaceAt(binarioAtual, 0, "1");
-                    break;
-                case "MALO":
-                    adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 7);
-                    binarioAtual = replaceAt(binarioAtual, 6, "1");
-                    break;
-                case "ROT":
-                    adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 8);
-                    binarioAtual = replaceAt(binarioAtual, 5, "1");
-                    break;
-                case "SUC":
-                    adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 9);
-                    binarioAtual = replaceAt(binarioAtual, 1, "1");
-                    break;
-                case "TMDP":
-                    adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 10);
-                    binarioAtual = replaceAt(binarioAtual, 2, "1");
-                    break;
-                case "OLG":
-                    adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 11);
-                    binarioAtual = replaceAt(binarioAtual, 10, "1");
-                    break;
-                case "CO":
-                    adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 12);
-                    binarioAtual = replaceAt(binarioAtual, 8, "1");
-                    break;
-                case "ACT":
-                    adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 13);
-                    binarioAtual = replaceAt(binarioAtual, 0, "1");
-                    break;
-                case "PIR":
-                    adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 14);
-                    binarioAtual = replaceAt(binarioAtual, 0, "1");
-                    break;
-                case "FCCP":
-                    adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 15);
-                    binarioAtual = replaceAt(binarioAtual, 9, "1");
-                    break;
-            }
+configs.forEach(input => {
+    input.addEventListener("click", () => {
+        switch (input.id) {
+            case "mito":
+                adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 0);
+                criarDelayInterativo(50);
+                temMitocondria = true;
+                break;
+            case "AA":
+                adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 1);
+                binarioAtual = replaceAt(binarioAtual, 7, "1");
+                break;
+            case "ADP1":
+                adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 2);
+                binarioAtual = replaceAt(binarioAtual, 3, "1");
+                break;
+            case "ADP2":
+                adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 3);
+                binarioAtual = replaceAt(binarioAtual, 4, "1");
+                break;
+            case "CN":
+                adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 4);
+                binarioAtual = replaceAt(binarioAtual, 8, "1");
+                break;
+            case "DNP":
+                adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 5);
+                binarioAtual = replaceAt(binarioAtual, 9, "1");
+                break;
+            case "MAL":
+                adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 6);
+                binarioAtual = replaceAt(binarioAtual, 0, "1");
+                break;
+            case "MALO":
+                adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 7);
+                binarioAtual = replaceAt(binarioAtual, 6, "1");
+                break;
+            case "ROT":
+                adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 8);
+                binarioAtual = replaceAt(binarioAtual, 5, "1");
+                break;
+            case "SUC":
+                adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 9);
+                binarioAtual = replaceAt(binarioAtual, 1, "1");
+                break;
+            case "TMDP":
+                adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 10);
+                binarioAtual = replaceAt(binarioAtual, 2, "1");
+                break;
+            case "OLG":
+                adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 11);
+                binarioAtual = replaceAt(binarioAtual, 10, "1");
+                break;
+            case "CO":
+                adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 12);
+                binarioAtual = replaceAt(binarioAtual, 8, "1");
+                break;
+            case "ACT":
+                adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 13);
+                binarioAtual = replaceAt(binarioAtual, 0, "1");
+                break;
+            case "PIR":
+                adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 14);
+                binarioAtual = replaceAt(binarioAtual, 0, "1");
+                break;
+            case "FCCP":
+                adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 15);
+                binarioAtual = replaceAt(binarioAtual, 9, "1");
+                break;
+        }
 
-            if (dataSet[binarioAtual] > 5.0){
-                criarDelayInterativo(200);
-            } else if (dataSet[binarioAtual] > 0 && dataSet[binarioAtual] <= 5){
+        lastAdd = input.id;
+        if(temMitocondria){
+            if (dataSet[binarioAtual] > 5.0) {
                 criarDelayInterativo(100);
+            } else if (dataSet[binarioAtual] > 0 && dataSet[binarioAtual] <= 5) {
+                criarDelayInterativo(50);
             }
+        }
 
-            input.disabled = true;
-            btnClose.dispatchEvent(new Event('click'));
-            lastChangeCount = globalCount;
-            despausar();
-        });
+
+        input.disabled = true;
+        btnClose.dispatchEvent(new Event('click'));
+        lastChangeCount = globalCount;
+        despausar();
     });
+});
 
 btnReset.addEventListener("click", () => {
     configs.forEach(input => {
@@ -2203,10 +2208,10 @@ btnReset.addEventListener("click", () => {
     icnPause.style.display = "none";
     icnPlay.style.display = "";
     btnPlay.disabled = false;
-    while (oxiData.length > 0) {
+    while (oxiData.length > 1) {
         oxiData.pop();
     }
-    while (proData.length > 0) {
+    while (proData.length > 1) {
         proData.pop();
     }
     while (legendas.length > 1) {
@@ -2218,6 +2223,9 @@ btnReset.addEventListener("click", () => {
             input.checked = false;
         }
     );
+    binarioAtual = "00000000000";
+    temMitocondria = false;
+    lastAdd = "";
     oxiGraph.update();
     proGraph.update();
 });
@@ -2236,14 +2244,41 @@ btnConfig.addEventListener("click", () => {
 
 let loop = setInterval(() => {
     if (estadoAtual === Estados.RODANDO) {
-        console.log("asdas");
-        oxiData.push(90);
-        proData.push(50);
+        let score = dataSet[binarioAtual];
+        if (temMitocondria) {
+            if (score === 0) {
+                if (lastAdd === "mito") {
+                    if (globalCount - lastChangeCount < 50) {
+                        oxiData.push(getQueda(globalCount - lastChangeCount, 4.5, 92, 2.18, 0.6));
+                    } else {
+                        oxiData.push(oxiData[oxiData.length - 1]);
+                    }
+                    proData.push(10);
+                } else {
+                    oxiData.push(oxiData[oxiData.length - 1]);
+                    proData.push(proData[proData.length - 1]);
+                }
+            } else {
+                if (score < 5.2) { // composto
+                    oxiData.push(oxiData[oxiData.length - 1] - getValorFromScore(score));
+                } else {
+                    if (globalCount - lastChangeCount < 50) {
+                        oxiData.push(oxiData[oxiData.length - 1] - getValorFromScore(5));
+                    } else {
+                        oxiData.push(oxiData[oxiData.length - 1] - getValorFromScore((Math.floor(score))));
+                    }
+                }
+            }
+        } else {
+            oxiData.push(oxiData[0]);
+            proData.push(proData[0]);
+        }
+
         oxiGraph.update();
         proGraph.update();
         globalCount++;
     }
-    if (globalCount >= 1000) {
+    if (globalCount >= 1000 || oxiData[oxiData.length - 1] <= 0) {
         gameOver();
     }
 }, 50);
@@ -2448,7 +2483,7 @@ function graphGrad() {
 function alternateRadius(ctx) {
     let temLegenda = pontos.map(obj => obj.count).includes(ctx.dataIndex);
     if (temLegenda) {
-        return 10;
+        return 8;
     } else {
         return 0;
     }
@@ -2490,6 +2525,7 @@ function criarDelayInterativo(counts) {
 }
 
 function adicionarMarca(count, name, colorId) {
+    console.log(count + " - " + globalCount);
     legendas.push({label: name, backgroundColor: colors[colorId]});
     pontos.push({count: count, colorId: colorId});
 }
@@ -2501,4 +2537,23 @@ function gameOver() {
             input.disabled = true;
         }
     );
+}
+
+function getQueda(x, a, b, c, d) {
+    return ((d / Math.log(x + c)) * a) + b;
+}
+
+function getValorFromScore(score){
+    switch (score) {
+        case 1:
+            return 0.05;
+        case 2:
+            return 0.1;
+        case 3:
+            return 0.2;
+        case 4 :
+            return 0.3;
+        case 5:
+            return 0.9;
+    }
 }
