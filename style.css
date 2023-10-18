@@ -81,9 +81,15 @@
     line-height: 1.42857;
 }
 
-.fab {
+.fabConf {
     position: fixed;
     bottom: 3rem;
+    right: 3rem;
+}
+
+.fabTime {
+    position: fixed;
+    bottom: 7.5rem;
     right: 3rem;
 }
 
