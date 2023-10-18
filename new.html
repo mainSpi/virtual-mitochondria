@@ -46,6 +46,9 @@
                 </div>
                 <div class="modal-body">
                     <div class="container text-center">
+                        <input type="range" class="form-range" min="-49" max="50" id="velSlider">
+                        <label for="velSlider" class="form-label">Velocidade</label>
+
                         <div class="row">
                             <div class="col">
                                 <div class="form-check checkbox">
@@ -118,8 +121,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer" style="justify-content: center">
+                    <button type="button" class="btn btn-success" id="btnExpo">Exportar Dados
+                    </button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnReset">Reiniciar
+                    </button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="btnContinuar">Continuar
                     </button>
                 </div>
             </div>
@@ -143,6 +150,7 @@
 
                 <hr class="my-4">
 
+                <canvas class="canvas" id="export" style="display: none"></canvas>
                 <canvas class="canvas" id="myChart"></canvas>
                 <div style="height: 150px">
                     <canvas class="canvas" id="grad"></canvas>

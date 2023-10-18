@@ -2082,11 +2082,14 @@ const labelsMap = [...document.getElementsByTagName("label")]
 const configs = [...document.getElementsByClassName("form-check checkbox")]
     .map(e => e.children[0]);
 const btnClose = document.getElementById("btnClose");
+const btnContinuar = document.getElementById("btnContinuar");
+const btnExpo = document.getElementById("btnExpo");
 const btnConfig = document.getElementById("btnConfig");
 const btnPlay = document.getElementById("btnPlay");
 const btnReset = document.getElementById("btnReset");
 const icnPlay = document.getElementById("icnPlay");
 const icnPause = document.getElementById("icnPause");
+const velSlider = document.getElementById("velSlider");
 const Estados = {
     PAUSADO: 0,
     RODANDO: 1,
@@ -2185,7 +2188,6 @@ configs.forEach(input => {
         if (temMitocondria) {
             if (dataSet[binarioAtual] > 5.0) {
                 criarDelayInterativo(100);
-                console.log("trigada espera de 100 ciclos");
             } else if (dataSet[binarioAtual] > 0 && dataSet[binarioAtual] <= 5) {
                 criarDelayInterativo(50);
             }
@@ -2206,9 +2208,11 @@ btnReset.addEventListener("click", () => {
     });
     estadoAtual = Estados.PAUSADO;
     globalCount = 0;
+    velSlider.value = '0';
     icnPause.style.display = "none";
     icnPlay.style.display = "";
     btnPlay.disabled = false;
+    btnContinuar.disabled = false;
     while (oxiData.length > 1) {
         oxiData.pop();
     }
@@ -2243,46 +2247,90 @@ btnConfig.addEventListener("click", () => {
     pausar();
 });
 
-let loop = setInterval(() => {
-    if (estadoAtual === Estados.RODANDO) {
-        let score = dataSet[binarioAtual];
-        if (temMitocondria) {
-            if (score === 0) {
-                if (lastAdd === "mito") {
-                    if (globalCount - lastChangeCount < 50) {
-                        oxiData.push(getQueda(globalCount - lastChangeCount, 4.5, 92, 2.18, 0.6));
+btnContinuar.addEventListener("click", () => {
+    despausar();
+});
+
+btnExpo.addEventListener("click", () => {
+    let c = document.getElementById("export");
+    let ctx = c.getContext("2d");
+
+    let img1 = new Image();
+    img1.src = document.getElementById("myChart").toDataURL();
+    let img2 = new Image();
+    img2.src = document.getElementById("grad").toDataURL();
+
+    img1.addEventListener('load', () => {
+        img2.addEventListener('load', () => {
+            c.width = img1.width;
+            c.height = img1.height + img2.height;
+
+            ctx.rect(0, 0, c.width, c.height);
+            ctx.fillStyle = "#FFFFFF";
+            ctx.fill();
+
+            ctx.drawImage(img1, 0, 0);
+            ctx.drawImage(img2, 0, img1.height);
+
+            download(c.toDataURL());
+        })
+    })
+
+});
+
+velSlider.addEventListener("change", () => {
+    createLoop(50 + (-1 * velSlider.value));
+});
+
+let loop = null;
+
+function createLoop(interval) {
+    clearInterval(loop);
+    loop = setInterval(() => {
+        if (estadoAtual === Estados.RODANDO) {
+            let score = dataSet[binarioAtual];
+            if (temMitocondria) {
+                if (score === 0) {
+                    if (lastAdd === "mito") {
+                        if (globalCount - lastChangeCount < 50) {
+                            oxiData.push(getQueda(globalCount - lastChangeCount, 4.5, 92, 2.18, 0.6));
+                        } else {
+                            oxiData.push(oxiData[oxiData.length - 1]);
+                        }
+                        proData.push(10);
                     } else {
                         oxiData.push(oxiData[oxiData.length - 1]);
+                        proData.push(proData[proData.length - 1]);
                     }
-                    proData.push(10);
                 } else {
-                    oxiData.push(oxiData[oxiData.length - 1]);
-                    proData.push(proData[proData.length - 1]);
+                    if (score < 5.1) { // composto
+                        oxiData.push(oxiData[oxiData.length - 1] - getValorFromScore(score));
+                    } else {
+                        if ((globalCount - lastChangeCount) < 25) {
+                            oxiData.push(oxiData[oxiData.length - 1] - getValorFromScore(5));
+                        } else {
+                            oxiData.push(oxiData[oxiData.length - 1] - getValorFromScore((Math.floor((score - 5) * 10))));
+                        }
+                    }
                 }
             } else {
-                if (score < 5.1) { // composto
-                    oxiData.push(oxiData[oxiData.length - 1] - getValorFromScore(score));
-                } else {
-                    if ((globalCount - lastChangeCount) < 25) {
-                        oxiData.push(oxiData[oxiData.length - 1] - getValorFromScore(5));
-                    } else {
-                        oxiData.push(oxiData[oxiData.length - 1] - getValorFromScore((Math.floor((score - 5) * 10))));
-                    }
-                }
+                oxiData.push(oxiData[0]);
+                proData.push(proData[0]);
             }
-        } else {
-            oxiData.push(oxiData[0]);
-            proData.push(proData[0]);
-        }
 
-        oxiGraph.update();
-        proGraph.update();
-        globalCount++;
-    }
-    if (globalCount >= 1000 || oxiData[oxiData.length - 1] <= 0) {
-        gameOver();
-    }
-}, 50);
+            oxiGraph.update();
+            proGraph.update();
+            globalCount++;
+        }
+        if (globalCount >= 1000 || oxiData[oxiData.length - 1] <= 0) {
+            gameOver();
+        }
+    }, interval);
+}
+
+shuffle(colors);
+createLoop(50 + (-1 * velSlider.value));
+
 
 function oldGameLoop() {
 
@@ -2395,6 +2443,7 @@ function graph() {
                 },
             }
         }
+
     });
 
     legendas = chart.data.datasets;
@@ -2519,10 +2568,12 @@ function pausar() {
     estadoAtual = Estados.PAUSADO;
 }
 
+let delayLoop = null;
 function criarDelayInterativo(counts) {
+    clearInterval(delayLoop)
     btnConfig.disabled = true;
     btnPlay.disabled = true;
-    let delayLoop = setInterval(() => {
+    delayLoop = setInterval(() => {
         if (globalCount >= lastChangeCount + counts) {
             btnConfig.disabled = false;
             btnPlay.disabled = false;
@@ -2532,7 +2583,6 @@ function criarDelayInterativo(counts) {
 }
 
 function adicionarMarca(count, name, colorId) {
-    console.log(count + " - " + globalCount);
     legendas.push({label: name, backgroundColor: colors[colorId]});
     pontos.push({count: count, colorId: colorId});
 }
@@ -2540,6 +2590,8 @@ function adicionarMarca(count, name, colorId) {
 function gameOver() {
     pausar();
     btnPlay.disabled = true;
+    btnContinuar.disabled = true;
+    btnConfig.disabled = false;
     configs.forEach(input => {
             input.disabled = true;
         }
@@ -2563,4 +2615,39 @@ function getValorFromScore(score) {
         case 5:
             return 0.9;
     }
+}
+
+/*
+function getNoise(size) {
+    let a = Math.floor(Math.random() * 10);
+    let num = a % 2 === 0 ? 1 : -1;
+    return size * num * Math.floor(Math.random() * 3);
+}
+*/
+
+function shuffle(array) {
+    let currentIndex = array.length, randomIndex;
+
+    // While there remain elements to shuffle.
+    while (currentIndex > 0) {
+
+        // Pick a remaining element.
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+
+        // And swap it with the current element.
+        [array[currentIndex], array[randomIndex]] = [
+            array[randomIndex], array[currentIndex]];
+    }
+
+    return array;
+}
+
+function download(dataUrl) {
+    const a = document.createElement("a");
+    a.href = dataUrl;
+    a.download = "export.png";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
 }
