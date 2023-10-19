@@ -2654,3 +2654,7 @@ window.addEventListener("load", () => {
     shuffle(colors);
     createLoop(50 + (-1 * velSlider.value));
 });
+
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/scripts/sw.js");
+}

@@ -1,6 +1,7 @@
 {
   "name": "Mitocôndria Virtual",
   "short_name": "Mitocôndria",
+  "description": "PWA que simula o funcionamento de uma mitocôndria.",
   "icons": [
     {
       "src": "/images/android-chrome-192x192.png",
