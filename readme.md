@@ -17,7 +17,7 @@ To use Mitocôndria Virtual, simply visit the deployed version on GitHub Pages a
 
 ## Usage
 
-1. Open the [Mitocôndria Virtual](https://your-username.github.io/mitochondria-virtual) link in your web browser.
+1. Open the [Mitocôndria Virtual](https://mainSpi.github.io) link in your web browser.
 2. Explore the various interactive features to understand the processes within a mitochondrion.
 
 ## License
