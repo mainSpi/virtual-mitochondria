@@ -2333,7 +2333,7 @@ function createLoop(interval) {
                         } else { // 5 tem queda suave.
                             if (potAtual === Pots.ALTA) {
                                 if (globalCount - lastChangeCount < 50) {
-                                    proData.push(getElipse(globalCount - lastChangeCount, 0.5, 0.9, 49.69, 10));
+                                    proData.push(getElipse(globalCount - lastChangeCount, 0.5, 0.9, 49.69, 100));
                                 } else {
                                     potAtual = Pots.BAIXA;
                                 }
@@ -2344,8 +2344,19 @@ function createLoop(interval) {
                     } else {
                         if ((globalCount - lastChangeCount) < 25) {
                             oxiData.push(oxiData[oxiData.length - 1] - getValorFromScore(5));
+                            proData.push(-3.2 * (globalCount - lastChangeCount) + 90);
+                            potAtual = Pots.BAIXA;
                         } else {
                             oxiData.push(oxiData[oxiData.length - 1] - getValorFromScore((Math.floor((score - 5) * 10))));
+                            if (potAtual === Pots.BAIXA) {
+                                if (globalCount - lastChangeCount < 75) {
+                                    proData.push(getElipse(globalCount - lastChangeCount - 25, 0.5, 0.9, 49.69, 0));
+                                } else {
+                                    potAtual = Pots.ALTA;
+                                }
+                            } else {
+                                proData.push(proData[proData.length - 1]);
+                            }
                         }
                     }
                 }
@@ -2637,7 +2648,7 @@ function getQueda(x, a, b, c, d) {
 }
 
 function getElipse(x, a, b, c, d) {
-    return Math.sqrt(Math.pow(b, 2) * (-1*(Math.pow(x - c, 2) / Math.pow(a, 2)) + 10000)) - d;
+    return (d > 0 ? -1 : 1) * Math.sqrt(Math.pow(b, 2) * (-1 * (Math.pow(x - c, 2) / Math.pow(a, 2)) + 10000)) + d;
 }
 
 function getValorFromScore(score) {
