@@ -2,32 +2,23 @@
 const cacheName = 'mitocondria-v1';
 const appShellFiles = [
     '/',
-    '/images/',
-    '/styles/',
-    '/scripts/',
-];
-
-let a = [
+    // '/images/',
+    // '/styles/',
+    // '/scripts/',
 
     '/scripts/bootstrap.min.js',
     '/scripts/chart.js',
     '/scripts/script.js',
-];
-let b = [
 
     '/styles/bootstrap.min.css',
     '/styles/bootstrap-icons.css',
     '/styles/bootstrap-icons.woff2',
     '/styles/Exo-VariableFont_wght.ttf',
     '/styles/style.css',
-];
-let c = [
 
     '/images/logo.png',
     '/images/favicon-16x16.png',
     '/images/favicon-32x32.png',
-];
-let d = [
 
     '/index.html',
     '/favicon.png'
@@ -39,13 +30,7 @@ self.addEventListener('install', (e) => {
     e.waitUntil((async () => {
         const cache = await caches.open(cacheName);
         console.log('[Service Worker] Caching all: app shell and content');
-        // await cache.addAll(appShellFiles);
-        await cache.addAll(['/',
-            '/images/',]);
-        // await cache.addAll(['/styles/',
-        //     '/scripts/',]);
-        // await cache.addAll(c);
-        // await cache.addAll(d);
+        await cache.addAll(appShellFiles);
     })());
 });
 
