@@ -1,3 +1,15 @@
+if ("serviceWorker" in navigator) {
+    window.addEventListener('load', async () => {
+        try {
+            const reg = await navigator.serviceWorker.register("/scripts/sw.js");
+            console.log('Service worker registered', reg);
+        } catch (err) {
+            console.log('Service worker registration failed: ', err);
+        }
+    });
+}
+
+
 const colors = [
 
     '#934B00',
@@ -2705,7 +2717,3 @@ window.addEventListener("load", () => {
     shuffle(colors);
     createLoop(50 + (-1 * velSlider.value));
 });
-
-if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("/scripts/sw.js");
-}
