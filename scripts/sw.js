@@ -40,8 +40,10 @@ self.addEventListener('install', (e) => {
         const cache = await caches.open(cacheName);
         console.log('[Service Worker] Caching all: app shell and content');
         // await cache.addAll(appShellFiles);
-        await cache.addAll(a);
-        // await cache.addAll(b);
+        await cache.addAll(['/',
+            '/images/',]);
+        // await cache.addAll(['/styles/',
+        //     '/scripts/',]);
         // await cache.addAll(c);
         // await cache.addAll(d);
     })());
