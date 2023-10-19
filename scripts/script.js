@@ -2090,9 +2090,14 @@ const btnReset = document.getElementById("btnReset");
 const icnPlay = document.getElementById("icnPlay");
 const icnPause = document.getElementById("icnPause");
 const velSlider = document.getElementById("velSlider");
+
 const Estados = {
     PAUSADO: 0,
     RODANDO: 1,
+}
+const Pots = {
+    ALTA: 0,
+    BAIXA: 1
 }
 let legendas = [
     // {label: "Malonato", backgroundColor: "#FFFFFF"}
@@ -2110,6 +2115,7 @@ let oxiGraph = graph();
 let proGraph = graphGrad();
 
 let estadoAtual = Estados.PAUSADO;
+let potAtual = Pots.BAIXA;
 let binarioAtual = "00000000000";
 let temMitocondria = false;
 let lastAdd = "";
@@ -2207,6 +2213,7 @@ btnReset.addEventListener("click", () => {
         input.checked = false;
     });
     estadoAtual = Estados.PAUSADO;
+    potAtual = Pots.BAIXA;
     globalCount = 0;
     velSlider.value = '0';
     icnPause.style.display = "none";
@@ -2299,12 +2306,41 @@ function createLoop(interval) {
                         }
                         proData.push(10);
                     } else {
+                        if (potAtual === Pots.ALTA) {
+                            if (globalCount - lastChangeCount < 50) {
+                                proData.push(proData[proData.length - 1]);
+                            } else {
+                                potAtual = Pots.BAIXA;
+                            }
+                        } else {
+                            proData.push(proData[proData.length - 1]);
+                        }
                         oxiData.push(oxiData[oxiData.length - 1]);
-                        proData.push(proData[proData.length - 1]);
                     }
                 } else {
-                    if (score < 5.1) { // composto
+                    if (score < 5.1) {
                         oxiData.push(oxiData[oxiData.length - 1] - getValorFromScore(score));
+                        if (score < 5) { // 4 pra baixo tem aumento
+                            if (potAtual === Pots.BAIXA) {
+                                if (globalCount - lastChangeCount < 50) {
+                                    proData.push(getElipse(globalCount - lastChangeCount, 0.5, 0.9, 49.69, 0));
+                                } else {
+                                    potAtual = Pots.ALTA;
+                                }
+                            } else {
+                                proData.push(proData[proData.length - 1]);
+                            }
+                        } else { // 5 tem queda suave.
+                            if (potAtual === Pots.ALTA) {
+                                if (globalCount - lastChangeCount < 50) {
+                                    proData.push(getElipse(globalCount - lastChangeCount, 0.5, 0.9, 49.69, 10));
+                                } else {
+                                    potAtual = Pots.BAIXA;
+                                }
+                            } else {
+                                proData.push(proData[proData.length - 1]);
+                            }
+                        }
                     } else {
                         if ((globalCount - lastChangeCount) < 25) {
                             oxiData.push(oxiData[oxiData.length - 1] - getValorFromScore(5));
@@ -2598,6 +2634,10 @@ function gameOver() {
 
 function getQueda(x, a, b, c, d) {
     return ((d / Math.log(x + c)) * a) + b;
+}
+
+function getElipse(x, a, b, c, d) {
+    return Math.sqrt(Math.pow(b, 2) * (-1*(Math.pow(x - c, 2) / Math.pow(a, 2)) + 10000)) - d;
 }
 
 function getValorFromScore(score) {

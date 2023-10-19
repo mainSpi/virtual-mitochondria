@@ -85,12 +85,14 @@
     position: fixed;
     bottom: 3rem;
     right: 3rem;
+    z-index: 1000;
 }
 
 .fabTime {
     position: fixed;
     bottom: 7.5rem;
     right: 3rem;
+    z-index: 1000;
 }
 
 .checkbox {
