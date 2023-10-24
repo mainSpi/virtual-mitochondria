@@ -2302,7 +2302,7 @@ btnExpo.addEventListener("click", () => {
 });
 
 velSlider.addEventListener("change", () => {
-    createLoop(50 + (-1 * velSlider.value));
+    createLoop(100 + (-1 * velSlider.value));
 });
 
 let loop = null;
