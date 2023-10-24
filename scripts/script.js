@@ -1,13 +1,13 @@
-if ("serviceWorker" in navigator) {
-    window.addEventListener('load', async () => {
-        try {
-            const reg = await navigator.serviceWorker.register("/sw.js");
-            console.log('Service worker registered', reg);
-        } catch (err) {
-            console.log('Service worker registration failed: ', err);
-        }
-    });
-}
+// if ("serviceWorker" in navigator) {
+//     window.addEventListener('load', async () => {
+//         try {
+//             const reg = await navigator.serviceWorker.register("/sw.js");
+//             console.log('Service worker registered', reg);
+//         } catch (err) {
+//             console.log('Service worker registration failed: ', err);
+//         }
+//     });
+// }
 
 
 const colors = [
@@ -2129,11 +2129,13 @@ let proGraph = graphGrad();
 let estadoAtual = Estados.PAUSADO;
 let potAtual = Pots.BAIXA;
 let binarioAtual = "00000000000";
+let lastBinario = "00000000000";
 let temMitocondria = false;
 let lastAdd = "";
 
 configs.forEach(input => {
     input.addEventListener("click", () => {
+        lastBinario = binarioAtual;
         switch (input.id) {
             case "mito":
                 adicionarMarca(globalCount, labelsMap.filter(obj => obj.id === input.id)[0].text, 0);
@@ -2248,8 +2250,10 @@ btnReset.addEventListener("click", () => {
         }
     );
     binarioAtual = "00000000000";
+    lastBinario = "00000000000";
     temMitocondria = false;
     lastAdd = "";
+    velSlider.dispatchEvent(new Event('change'));
     oxiGraph.update();
     proGraph.update();
 });
@@ -2311,6 +2315,7 @@ function createLoop(interval) {
             if (temMitocondria) {
                 if (score === 0) {
                     if (lastAdd === "mito") {
+                        // test for mito addition, then draw its curve
                         if (globalCount - lastChangeCount < 50) {
                             oxiData.push(getQueda(globalCount - lastChangeCount, 4.5, 92, 2.18, 0.6));
                         } else {
@@ -2320,8 +2325,9 @@ function createLoop(interval) {
                     } else {
                         if (potAtual === Pots.ALTA) {
                             if (globalCount - lastChangeCount < 50) {
-                                proData.push(proData[proData.length - 1]);
+                                proData.push(getElipse(globalCount - lastChangeCount, 0.5, 0.9, 49.69, 100));
                             } else {
+                                proData.push(proData[proData.length - 1]);
                                 potAtual = Pots.BAIXA;
                             }
                         } else {
@@ -2337,6 +2343,7 @@ function createLoop(interval) {
                                 if (globalCount - lastChangeCount < 50) {
                                     proData.push(getElipse(globalCount - lastChangeCount, 0.5, 0.9, 49.69, 0));
                                 } else {
+                                    proData.push(proData[proData.length - 1]);
                                     potAtual = Pots.ALTA;
                                 }
                             } else {
@@ -2347,6 +2354,7 @@ function createLoop(interval) {
                                 if (globalCount - lastChangeCount < 50) {
                                     proData.push(getElipse(globalCount - lastChangeCount, 0.5, 0.9, 49.69, 100));
                                 } else {
+                                    proData.push(proData[proData.length - 1]);
                                     potAtual = Pots.BAIXA;
                                 }
                             } else {
@@ -2354,7 +2362,8 @@ function createLoop(interval) {
                             }
                         }
                     } else {
-                        if ((globalCount - lastChangeCount) < 25) {
+                        // only do accelerated drop if one didnt happen yet
+                        if ((globalCount - lastChangeCount) < 25 && dataSet[lastBinario] < 5.1) {
                             oxiData.push(oxiData[oxiData.length - 1] - getValorFromScore(5));
                             proData.push(-3.2 * (globalCount - lastChangeCount) + 90);
                             potAtual = Pots.BAIXA;
@@ -2364,6 +2373,7 @@ function createLoop(interval) {
                                 if (globalCount - lastChangeCount < 75) {
                                     proData.push(getElipse(globalCount - lastChangeCount - 25, 0.5, 0.9, 49.69, 0));
                                 } else {
+                                    proData.push(proData[proData.length - 1]);
                                     potAtual = Pots.ALTA;
                                 }
                             } else {
@@ -2376,6 +2386,7 @@ function createLoop(interval) {
                 oxiData.push(oxiData[0]);
                 proData.push(proData[0]);
             }
+
 
             oxiGraph.update();
             proGraph.update();
@@ -2595,7 +2606,9 @@ function graphGrad() {
 function alternateRadius(ctx) {
     let temLegenda = pontos.map(obj => obj.count).includes(ctx.dataIndex);
     if (temLegenda) {
-        return 8;
+        let size = oxiGraph.width * 0.0084;
+        console.log(size > 8 ? 8 : (size < 2 ? 2 : size));
+        return size > 8 ? 8 : (size < 2 ? 2 : size);
     } else {
         return 0;
     }
@@ -2664,6 +2677,7 @@ function getElipse(x, a, b, c, d) {
 }
 
 function getValorFromScore(score) {
+    /*
     switch (score) {
         case 1:
             return 0.05;
@@ -2674,7 +2688,20 @@ function getValorFromScore(score) {
         case 4 :
             return 0.3;
         case 5:
-            return 0.9;
+            return 0.6;
+    }
+    */
+    switch (score) {
+        case 1:
+            return 0.02;
+        case 2:
+            return 0.07;
+        case 3:
+            return 0.12;
+        case 4 :
+            return 0.17;
+        case 5:
+            return 0.6;
     }
 }
 
@@ -2686,6 +2713,7 @@ function getNoise(size) {
 }
 */
 
+//used to shuffle the colors array, basically
 function shuffle(array) {
     let currentIndex = array.length, randomIndex;
 
@@ -2716,4 +2744,10 @@ function download(dataUrl) {
 window.addEventListener("load", () => {
     shuffle(colors);
     createLoop(50 + (-1 * velSlider.value));
+
+    // fix font not loading fast enough
+    setTimeout(() => {
+        oxiGraph.update();
+        proGraph.update();
+    }, 100);
 });

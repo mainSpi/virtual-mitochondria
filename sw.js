@@ -1,5 +1,5 @@
 // Files to cache
-const cacheName = 'mitocondria-v1';
+const cacheName = 'mitocondria-v2';
 const appShellFiles = [
     '/',
     // '/images/',
