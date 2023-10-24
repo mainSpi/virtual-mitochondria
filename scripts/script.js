@@ -2215,9 +2215,9 @@ configs.forEach(input => {
 
 
         input.disabled = true;
-        btnClose.dispatchEvent(new Event('click'));
         lastChangeCount = globalCount;
-        despausar();
+        // btnClose.dispatchEvent(new Event('click'));
+        // despausar();
     });
 });
 
