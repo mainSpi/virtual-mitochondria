@@ -3,3 +3,21 @@
 -> linha na adicao usando filter OU mini bolinha
 
 -> questao da velocidade muito rapida
+
+-> fixar as cores
+    - mitocondria seja roxa cor base
+
+-> fila de multiplas adicoes
+
+-> ADP (1) deve retornar ao 1 apos o consumo
+
+-> a concentracao pode chegar a zero
+    - loop de feedback pos processamento
+
+-> 3 niveis de DNP assim como ADP
+    - primeiro 2.1
+    - segundo 5.1
+    - terceiro a taxa de consumo vai a zero, score tbm
+
+-> implementar 2 eixo de taxa de consumo de oxigenio
+    - calculado ao vivo de acordo com o oxiData

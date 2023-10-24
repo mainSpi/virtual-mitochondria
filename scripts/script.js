@@ -1,3 +1,4 @@
+/*
 if ("serviceWorker" in navigator) {
     window.addEventListener('load', async () => {
         try {
@@ -8,7 +9,7 @@ if ("serviceWorker" in navigator) {
         }
     });
 }
-
+*/
 
 const colors = [
 
@@ -2742,7 +2743,7 @@ function download(dataUrl) {
 }
 
 window.addEventListener("load", () => {
-    shuffle(colors);
+    // shuffle(colors);
     createLoop(50 + (-1 * velSlider.value));
 
     // fix font not loading fast enough
