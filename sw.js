@@ -1,27 +1,27 @@
 // Files to cache
-const cacheName = 'mitocondria-v2';
+const cacheName = 'mitocondria-v3';
 const appShellFiles = [
     '/',
     // '/images/',
     // '/styles/',
     // '/scripts/',
 
-    '/scripts/bootstrap.min.js',
-    '/scripts/chart.js',
-    '/scripts/script.js',
+    'scripts/bootstrap.min.js',
+    'scripts/chart.js',
+    'scripts/script.js',
 
-    '/styles/bootstrap.min.css',
-    '/styles/bootstrap-icons.css',
-    '/styles/bootstrap-icons.woff2',
-    '/styles/Exo-VariableFont_wght.ttf',
-    '/styles/style.css',
+    'styles/bootstrap.min.css',
+    'styles/bootstrap-icons.css',
+    'styles/bootstrap-icons.woff2',
+    'styles/Exo-VariableFont_wght.ttf',
+    'styles/style.css',
 
-    '/images/logo.png',
-    '/images/favicon-16x16.png',
-    '/images/favicon-32x32.png',
+    'images/logo.png',
+    'images/favicon-16x16.png',
+    'images/favicon-32x32.png',
 
-    '/index.html',
-    '/favicon.png'
+    'index.html',
+    'favicon.png'
 ];
 
 // Installing Service Worker
