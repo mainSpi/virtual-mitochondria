@@ -13,11 +13,11 @@ Mitocôndria Virtual is a Progressive Web App (PWA) designed to simulate the fun
 
 ## Installation
 
-To use Mitocôndria Virtual, simply visit the deployed version on GitHub Pages at [Mitocôndria Virtual](https://mainSpi.github.io). Since it's a PWA, no additional installation steps are required.
+To use Mitocôndria Virtual, simply visit the deployed version on GitHub Pages at [Mitocôndria Virtual](https://mainspi.github.io/virtual-mitochondria/). Since it's a PWA, no additional installation steps are required.
 
 ## Usage
 
-1. Open the [Mitocôndria Virtual](https://mainSpi.github.io) link in your web browser.
+1. Open the [Mitocôndria Virtual](https://mainspi.github.io/virtual-mitochondria/) link in your web browser.
 2. Explore the various interactive features to understand the processes within a mitochondrion.
 
 ## License
